@@ -1,20 +1,21 @@
 #!/usr/bin/python3
 
-#complete CAPITALIZED sections
+# complete CAPITALIZED sections
 
-#AUTHOR: 
-#DATE:
+# AUTHOR: LigerBots CubeSat team
+# DATE: 3/14/2022
 
-#import libraries
+# import libraries
 import time
 import os
 import board
 import busio
 import adafruit_bno055
-#from git import Repo
+# from git import Repo
 from picamera import PiCamera
+import math
 
-#setup imu and camera
+# setup imu and camera
 i2c = busio.I2C(board.SCL, board.SDA)
 sensor = adafruit_bno055.BNO055_I2C(i2c)
 camera = PiCamera()
@@ -35,30 +36,39 @@ def git_push():
         print('Couldn\'t upload to git')
 """
 
-    
+ 
 #SET THRESHOLD
-threshold = 1
+threshold = 15.0
 
+camera.resolution = (1920, 1080)
+# this blocks the whole screen, so not too helpful
+# camera.start_preview()
 
-#read acceleration
 while True:
+    # read acceleration
     accelX, accelY, accelZ = sensor.acceleration
-    print(accelX, accelY, accelZ)
+    # print(accelX, accelY, accelZ)
+    totalAccel = math.sqrt(accelX**2 + accelY**2 + accelZ**2)
+    print('totalAccel =', totalAccel)
 
-    #CHECK IF READINGS ARE ABOVE THRESHOLD
-    if True:
-        #PAUSE
+    # CHECK IF READINGS ARE ABOVE THRESHOLD
+    if totalAccel > threshold:
+        print('Picture triggered')
 
-    
-        #TAKE/SAVE/UPLOAD A PICTURE 
-        name = ""     #Last Name, First Initial  ex. FoxJ
-        
+        # PAUSE - count down 5 to 1
+        for countdown in range(5, 0, -1):
+            print(countdown)
+            time.sleep(1)
+
+        # TAKE/SAVE/UPLOAD A PICTURE 
+        name = "ligerbots"     #Last Name, First Initial  ex. FoxJ
+
         if name:
             t = time.strftime("_%H%M%S")      # current time string
-            imgname = ('/home/pi/FlatSatChallenge/Images/YOURFOLDER/%s%s' % (name,t)) #change directory to your folder
-    
-            #<YOUR CODE GOES HERE>#
-            
-    
-    #PAUSE
-    time.sleep(2)
+            imgname = ('/home/pi/CubeSat/flatsat/Images/%s%s.jpg' % (name,t))
+
+            print('Taking picture', imgname)
+            camera.capture(imgname)
+
+    # PAUSE
+    time.sleep(1)
