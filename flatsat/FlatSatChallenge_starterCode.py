@@ -12,7 +12,7 @@ import board
 import busio
 import adafruit_bno055
 # from git import Repo
-from picamera import PiCamera
+from picamerax import PiCamera
 import math
 
 # setup imu and camera
@@ -41,6 +41,9 @@ def git_push():
 threshold = 15.0
 
 camera.resolution = (1920, 1080)
+# awb_mode = 'greyworld' is only in picameraX
+camera.awb_mode = 'greyworld'
+
 # this blocks the whole screen, so not too helpful
 # camera.start_preview()
 
