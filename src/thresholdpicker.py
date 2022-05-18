@@ -20,13 +20,30 @@ def process_files(image_files):
     # WINDOW_NORMAL allows the size to be changed
     cv2.namedWindow('image', cv2.WINDOW_NORMAL)
     # cv2.namedWindow('image')
+    
+    # duck
+    # cv2.createTrackbar('Hlow', 'image', 50, 180, proceed)
+    # cv2.createTrackbar('Hhigh', 'image', 40, 180, proceed)
+    # cv2.createTrackbar('Slow', 'image', 35, 255, proceed)
+    # cv2.createTrackbar('Shigh', 'image', 63, 255, proceed)
+    # cv2.createTrackbar('Vlow', 'image', 96, 255, proceed)
+    # cv2.createTrackbar('Vhigh', 'image', 75, 255, proceed)
 
-    cv2.createTrackbar('Hlow', 'image', 65, 255, proceed)
-    cv2.createTrackbar('Hhigh', 'image', 100, 255, proceed)
-    cv2.createTrackbar('Slow', 'image', 75, 255, proceed)
-    cv2.createTrackbar('Shigh', 'image', 255, 255, proceed)
-    cv2.createTrackbar('Vlow', 'image', 140, 255, proceed)
-    cv2.createTrackbar('Vhigh', 'image', 255, 255, proceed)
+    # blue range
+    cv2.createTrackbar('Hlow', 'image', 98, 255, proceed)
+    cv2.createTrackbar('Hhigh', 'image', 60, 255, proceed)
+    cv2.createTrackbar('Slow', 'image', 6, 255, proceed)
+    cv2.createTrackbar('Shigh', 'image', 4, 255, proceed)
+    cv2.createTrackbar('Vlow', 'image', 41, 255, proceed)
+    cv2.createTrackbar('Vhigh', 'image', 27, 255, proceed)
+
+    #green range
+    # cv2.createTrackbar('Hlow', 'image', 65, 255, proceed)
+    # cv2.createTrackbar('Hhigh', 'image', 100, 255, proceed)
+    # cv2.createTrackbar('Slow', 'image', 75, 255, proceed)
+    # cv2.createTrackbar('Shigh', 'image', 255, 255, proceed)
+    # cv2.createTrackbar('Vlow', 'image', 140, 255, proceed)
+    # cv2.createTrackbar('Vhigh', 'image', 255, 255, proceed)
 
     image_id = -1
     cv2.createTrackbar('Image#', 'image', 0, len(image_files)-1, proceed)
@@ -51,16 +68,26 @@ def process_files(image_files):
             # get current positions of four trackbars
             hLow = cv2.getTrackbarPos('Hlow', 'image')
             hHigh = cv2.getTrackbarPos('Hhigh', 'image')
+            
             sLow = cv2.getTrackbarPos('Slow', 'image')
-            vLow = cv2.getTrackbarPos('Vlow', 'image')
             sHigh = cv2.getTrackbarPos('Shigh', 'image')
+            
+            vLow = cv2.getTrackbarPos('Vlow', 'image')
             vHigh = cv2.getTrackbarPos('Vhigh', 'image')
+
+            # hLow = 208
+            # hHigh = 214
+            # sLow = 57
+            # vLow = 96
+            # sHigh = 91
+            # vHigh = 57
 
             lowLimitHSV = numpy.array([hLow, sLow, vLow])
             highLimitHSV = numpy.array([hHigh, sHigh, vHigh])
             mask = cv2.inRange(hsv_frame, lowLimitHSV, highLimitHSV)
 
-            # maskedFrame = cv2.bitwise_and(bgr_frame, bgr_frame, mask=mask)
+            # invert
+            maskedFrame = cv2.bitwise_and(bgr_frame, bgr_frame, mask=mask)
 
             res = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
             if len(res) == 2:
