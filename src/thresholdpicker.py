@@ -37,7 +37,7 @@ def process_files(image_files):
     cv2.createTrackbar('Vlow', 'image', 41, 255, proceed)
     cv2.createTrackbar('Vhigh', 'image', 27, 255, proceed)
 
-    #green range
+    # green range
     # cv2.createTrackbar('Hlow', 'image', 65, 255, proceed)
     # cv2.createTrackbar('Hhigh', 'image', 100, 255, proceed)
     # cv2.createTrackbar('Slow', 'image', 75, 255, proceed)
