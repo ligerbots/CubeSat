@@ -17,7 +17,7 @@ class Camera:
 
         # set "auto-white-balance" to "greyworld", to deal with pink images
         self.pi_camera.awb_mode = 'greyworld'
-        
+
         time.sleep(5)
         return
 

@@ -12,11 +12,11 @@ class ImageWriter:
         self.save_dir = save_dir_arg
         return
 
-    def write_image(self, picture):
+    def write(self, picture):
         '''Write the picture to a file'''
 
         filename = "IMG_" + str(int(time.time())) + ".jpg"
         full_filename = os.path.join(self.save_dir, filename)
-        print('saving to', full_filename)
+        # print('saving to', full_filename)
         cv2.imwrite(full_filename, picture)
         return

@@ -87,6 +87,7 @@ def process_files(image_files):
             mask = cv2.inRange(hsv_frame, lowLimitHSV, highLimitHSV)
 
             # invert
+            mask = cv2.bitwise_not(mask)
             maskedFrame = cv2.bitwise_and(bgr_frame, bgr_frame, mask=mask)
 
             res = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
