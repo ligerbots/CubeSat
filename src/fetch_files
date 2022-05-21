@@ -1,0 +1,27 @@
+#!/bin/bash
+
+MAC=DC:A6:32:56:13:F1
+OBEX_CHANNEL=10
+IMAGE_DIR=saved_images
+
+files=$(obexftp --bluetooth $MAC -B $OBEX_CHANNEL -c $IMAGE_DIR -l 2>&1 | grep '^<file name' | sed -e 's/^<file name="//' -e 's/".*$//')
+if [ -z "$files" ]; then
+    echo "No files to fetch"
+    exit
+fi
+sleep 1
+
+for fn in $files; do
+    echo -n "Fetching $fn ... "
+    obexftp --bluetooth $MAC -B $OBEX_CHANNEL -c $IMAGE_DIR -g $fn > /dev/null 2>&1
+    rc=$?
+    if [ $rc = 0 -o $rc = 255 ]; then
+        echo "succeeded"
+        sleep 1
+        echo "Removing $fn"
+        obexftp --bluetooth $MAC -B $OBEX_CHANNEL -c $IMAGE_DIR -k $fn > /dev/null 2>&1
+    else
+        echo " failed, rc=$rc"
+    fi
+    sleep 1
+done    
